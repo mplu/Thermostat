@@ -1,4 +1,4 @@
 #!/bin/sh
 
-rm thermostatV2
-gcc -Wall thermostat.c readfile.c -o thermostatV2 -lwiringPi
+rm thermostat_chambre
+gcc -Wall thermostat_chambre.c readfile.c -o thermostat_chambre -lwiringPi

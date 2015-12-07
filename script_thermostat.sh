@@ -21,17 +21,11 @@ else
 	echo "impossible de chopper le truc !"
 fi
 
-cp $INTERFACE_FOLDER/consigne.csv .
-sudo ./thermostatV2 |
+cp $INTERFACE_FOLDER/consigne_chambre.csv .
+sudo ./thermostat_chambre |
 while read -r DATE JOUR HEURE NOMBRE1 NOMBRE2 NOMBRE3 NOMBRE4 NOMBRE5 TEXTE
 do
-	#echo "$DATE" "$JOUR" "$HEURE" "$NOMBRE1" "$NOMBRE2" "$NOMBRE3" "$NOMBRE4" "$NOMBRE5" "$TEXTE"
-	sqlite3  $EXEC_FOLDER/meteosat.db "insert into meteo values('$DATE','$JOUR','$HEURE','$NOMBRE1','$NOMBRE2','$NOMBRE3','$NOMBRE4','$NOMBRE5','$TEXTE');"
+	sqlite3  $EXEC_FOLDER/meteosat2.db "insert into meteo values('$DATE','$JOUR','$HEURE','$NOMBRE1','$NOMBRE2','$NOMBRE3','$NOMBRE4','$NOMBRE5','$TEXTE');"
 done
-sudo kill -9 `pgrep fbi`
-sudo fbi -T 2 -d /dev/fb1 -noverbose -a out.jpg
-cp out.jpg $INTERFACE_FOLDER/
-cp LFOP.TXT $INTERFACE_FOLDER/
-cp meteosat.db $INTERFACE_FOLDER/
-#send order to huzzah board
-sudo ./clientThermo 192.168.1.117
+cp out2.jpg $INTERFACE_FOLDER/
+cp meteosat2.db $INTERFACE_FOLDER/

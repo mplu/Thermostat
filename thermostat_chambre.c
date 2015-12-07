@@ -71,19 +71,19 @@ int main (void)
 	
 	if(ordre_chauffe == RAD_ON)
 	{
-		digitalWrite (THERMO_PIN,  LOW) ;
-		//printf("mode jour\n");
+		//mode jour
+		digitalWrite (THERMO_PIN,  HIGH) ;
 	}else
 	{
 		if(temptemperature < consignedenuit)
 		{
-			digitalWrite (THERMO_PIN, LOW) ;
+			//mode jour forcé
+			digitalWrite (THERMO_PIN, HIGH) ;
 			ordre_chauffe = RAD_ON_FORCED;
-			//printf("mode nuit qui chauffe\n");
 		}else
 		{
-			digitalWrite (THERMO_PIN, HIGH) ;
-			//printf("mode nuit\n");
+			//mode nuit
+			digitalWrite (THERMO_PIN, LOW) ;
 		}
 	}
 	
@@ -113,7 +113,7 @@ int main (void)
 					-pointsize 15 -draw \"fill white  text 220,140 '%s' \" \
 					-pointsize 17 -draw \"fill white  text 10,205 '%d°C / HR : %d%% / Vent : %dkm/h' \" \
 					-pointsize 17 -draw \"fill white  text 10,230 '(%s - %s UTC)' \" \
-					out.jpg"
+					out2.jpg"
 					,tab_jour_semaine[jour],jourmois,tab_mois[mois]
 					,heure,minute
 					,temptemperature
@@ -123,26 +123,10 @@ int main (void)
 	
 	system(command);
 	
-	//printf("%04d-%02d-%02d %d %d:%02d / ",annee+1900,mois+1,jourmois,jour,heure,minute);
-	//printf("mesure : %.2f / consigne : %.2f => ",temptemperature,consigne);
-	//printf("%s %s %d %d %d\n", webdata.date,webdata.heure,);
 	if((minute%15==0))
 	{
 		printf("%04d-%02d-%02d\t%d\t%d:%02d\t%.2f\t%.2f\t%d\t%d\t%d\t%s\n",annee+1900,mois+1,jourmois,jour,heure,minute,consigne,temptemperature,webdata.temperature,webdata.humidite,webdata.vent,etat_chauffage);
 	}
-	
-	/*sprintf(command,"sh -c \"echo 508 > /sys/class/gpio/export\"");
-	system(command);
-	sprintf(command,"sh -c \"echo 'out' > /sys/class/gpio/gpio508/direction\"");
-	system(command);*/
-	if((heure<23)&&(heure>=6))
-	{
-		sprintf(command,"sh -c \"echo '1' > /sys/class/gpio/gpio508/value\"");
-	}else
-	{
-		sprintf(command,"sh -c \"echo '0' > /sys/class/gpio/gpio508/value\"");
-	}
-	system(command);
 	
 	return 0 ;
 }
